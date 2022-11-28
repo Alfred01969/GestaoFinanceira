@@ -34,7 +34,7 @@ namespace GestaoFinanceira
             }
 
             var tipo = await _context.Tipo
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.TipoId == id);
             if (tipo == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace GestaoFinanceira
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Descricao")] Tipo tipo)
+        public async Task<IActionResult> Create([Bind("TipoId,Nome,Descricao")] Tipo tipo)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace GestaoFinanceira
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descricao")] Tipo tipo)
+        public async Task<IActionResult> Edit(int id, [Bind("TipoId,Nome,Descricao")] Tipo tipo)
         {
-            if (id != tipo.Id)
+            if (id != tipo.TipoId)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace GestaoFinanceira
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TipoExists(tipo.Id))
+                    if (!TipoExists(tipo.TipoId))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace GestaoFinanceira
             }
 
             var tipo = await _context.Tipo
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.TipoId == id);
             if (tipo == null)
             {
                 return NotFound();
@@ -155,7 +155,7 @@ namespace GestaoFinanceira
 
         private bool TipoExists(int id)
         {
-          return _context.Tipo.Any(e => e.Id == id);
+          return _context.Tipo.Any(e => e.TipoId == id);
         }
     }
 }

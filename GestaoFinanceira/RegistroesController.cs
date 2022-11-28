@@ -22,7 +22,8 @@ namespace GestaoFinanceira
         // GET: Registroes
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Registro.ToListAsync());
+            var gestaoFinanceiraContext = _context.Registro.Include(r => r.Tipo);
+            return View(await gestaoFinanceiraContext.ToListAsync());
         }
 
         // GET: Registroes/Details/5
@@ -34,6 +35,7 @@ namespace GestaoFinanceira
             }
 
             var registro = await _context.Registro
+                .Include(r => r.Tipo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (registro == null)
             {
@@ -46,6 +48,7 @@ namespace GestaoFinanceira
         // GET: Registroes/Create
         public IActionResult Create()
         {
+            ViewData["TipoId"] = new SelectList(_context.Tipo, "TipoId", "Nome");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace GestaoFinanceira
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IdConta,Valor,Data")] Registro registro)
+        public async Task<IActionResult> Create([Bind("Id,Valor,Data,TipoId")] Registro registro)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace GestaoFinanceira
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TipoId"] = new SelectList(_context.Tipo, "TipoId", "Nome", registro.TipoId);
             return View(registro);
         }
 
@@ -78,6 +82,7 @@ namespace GestaoFinanceira
             {
                 return NotFound();
             }
+            ViewData["TipoId"] = new SelectList(_context.Tipo, "TipoId", "Nome", registro.TipoId);
             return View(registro);
         }
 
@@ -86,7 +91,7 @@ namespace GestaoFinanceira
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IdConta,Valor,Data")] Registro registro)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Valor,Data,TipoId")] Registro registro)
         {
             if (id != registro.Id)
             {
@@ -113,6 +118,7 @@ namespace GestaoFinanceira
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["TipoId"] = new SelectList(_context.Tipo, "TipoId", "Nome", registro.TipoId);
             return View(registro);
         }
 
@@ -125,6 +131,7 @@ namespace GestaoFinanceira
             }
 
             var registro = await _context.Registro
+                .Include(r => r.Tipo)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (registro == null)
             {

@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace GestaoFinanceira.Models
 {
     public class Tipo
     {
-        public int Id { get; set; }
+        public int TipoId { get; set; }
 
         [Required]
         [Display(Name = "Tipo de Conta")]
@@ -13,7 +14,10 @@ namespace GestaoFinanceira.Models
         [Display(Name = "Descrição")]
         public string? Descricao { get; set; }
 
-        
+        //public virtual ICollection<SelectListItem> Tipoes { get; set; }
+
+
+
 
     }
 }
